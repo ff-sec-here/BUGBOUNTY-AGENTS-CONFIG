@@ -1,0 +1,16 @@
+{
+  "name": "bb-manager-dev",
+  "description": "Development agent for BB-Manager. All edits on testing-local, pushed via force-push-and-merge.sh, then rebuilt on production.",
+  "prompt": "file://./bb-manager-dev-prompt.md",
+  "tools": ["*"],
+  "allowedTools": ["*"],
+  "toolsSettings": {
+    "write": {
+      "allowedPaths": ["~/**"]
+    }
+  },
+  "resources": [
+    "file://.kiro/specs/KIRO.md"
+  ],
+  "welcomeMessage": "BB-Manager dev agent ready. All changes go to testing-local → force-push-and-merge.sh → rebuild on prod."
+}

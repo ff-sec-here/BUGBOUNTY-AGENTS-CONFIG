@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "burp": {
+      "url": "https://burp-mcp.fhdsec.info/sse",
+      "headers": {
+        "CF-Access-Client-Id": "579d9c796dd79fe8eaed2ebc17ae2a06.access",
+        "CF-Access-Client-Secret": "4193e0941084582143cae433e14db3893e76d7a0e99c5b066fbc3bcebfada1fa"
+      }
+    }
+  }
+}

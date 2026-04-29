@@ -1,0 +1,24 @@
+{
+  "name": "bugbounty",
+  "description": "Bug bounty recon and hunting agent with BB-Mapper integration",
+  "prompt": "file:///root/.kiro/prompts/bugbounty.txt",
+  "tools": ["fs_read", "fs_write", "execute_bash", "grep", "glob", "code"],
+  "resources": [
+    "skill:///root/.kiro/skills/bug-bounty-mapper-skill/SKILL.md",
+    "skill:///root/.kiro/skills/burp-skill/SKILL.md",
+    "skill:///root/.kiro/skills/fuzzing-skill/SKILL.md",
+    "skill:///root/.kiro/skills/recon-skill/SKILL.md",
+    "skill:///root/.kiro/skills/portscan-skill/SKILL.md",
+    "skill:///root/.kiro/skills/js-recon-skill/SKILL.md"
+  ],
+  "hooks": {
+    "agentSpawn": [
+      {
+        "command": "echo '[BB] Session started at '$(date) && echo '[BB] Working dir: '$(pwd)",
+        "description": "Log session start"
+      }
+    ]
+  },
+  "keyboardShortcut": "ctrl+shift+b",
+  "welcomeMessage": "Bug bounty agent ready. What target are we hunting today? (Provide your BB-Mapper API token if not set)"
+}
