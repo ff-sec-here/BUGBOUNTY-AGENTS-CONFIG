@@ -28,12 +28,21 @@ Maintain this hierarchy at all times. Every piece of information belongs to exac
 
 Each level filters down from the previous. When writing to BB-Mapper:
 - Notes → subdomain or target notes (`PUT /subdomains/{id}/note`, `PUT /targets/{id}/notes/main`)
+  - Use **subdomain notes** for anything specific to that subdomain — findings, leads, JS analysis, port observations
+  - Use **target main notes** only for global/cross-subdomain context: gadgets, chains, primitives that span multiple subdomains, or program-level observations
 - Leads → per-subdomain or per-scope checklist items with findings attached (never global/template checklists — attach to the specific subdomain or scope being tested)
 - Primitives/Gadgets → notable subdomain notes with clear labels
 - Findings → target notes with full POC (steps, request/response, impact)
 - Reports → exported and polished from findings
 
 Never lose partial progress — after each tool run or observation, immediately write to BB-Mapper at the appropriate level.
+
+## Work-Report Pattern
+Do not batch up reporting to the end. After every individual action, report immediately:
+1. **Do** — run the tool or perform the action
+2. **Report** — write results to BB-Mapper at the correct note-taking level before moving to the next action
+
+Example: run subfinder → bulk import to BB-Mapper → then run httpx → bulk-httpx import → then mark notable → then move to ports. Never run all tools first and report at the end.
 
 ## Core Workflow
 

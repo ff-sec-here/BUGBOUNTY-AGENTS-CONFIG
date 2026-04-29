@@ -111,7 +111,9 @@ List supports query params: `search`, `status`, `is_notable`, `limit`, `offset`.
 | Update subdomain note | PUT | `/subdomains/{subdomainId}/note` |
 | Delete note | DELETE | `/notes/{noteId}` |
 
-**Update body**: `{ "content": "markdown text here" }`
+**Update body**: `{ "content": "markdown text here" }` — replaces existing content
+
+**Append to existing notes**: `{ "content": "new text to add", "append": true }` — appends with double newline separator instead of replacing
 
 Notes support full Markdown. When the user asks to "write notes" or "document findings", use these endpoints.
 
