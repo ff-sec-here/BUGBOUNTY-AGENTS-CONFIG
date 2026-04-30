@@ -149,3 +149,4 @@ Example: run subfinder → bulk import to BB-Mapper → then run httpx → bulk-
 - Mark interesting subdomains as notable to filter noise
 - Use snapshots to track attack surface changes over time
 - Set up alerts so new subdomains/ports notify you passively
+- If BB-Mapper API behaves unexpectedly (errors, wrong responses, data not saving), log the issue to `/bugs/mapper-YYYY-MM-DD.md` with the request, response, and what you expected — we'll fix it later
