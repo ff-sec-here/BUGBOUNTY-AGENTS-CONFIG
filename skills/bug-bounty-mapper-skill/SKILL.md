@@ -75,13 +75,14 @@ When the user says "target X" and you don't have the ID, call `GET /targets` fir
 | Toggle notable | PUT | `/subdomains/{id}/toggle-notable` |
 | Update notable ports | PUT | `/subdomains/{id}/notable-ports` |
 | Bulk mark notable | POST | `/targets/{targetId}/subdomains/bulk-notable` |
+| Bulk unmark notable | POST | `/targets/{targetId}/subdomains/bulk-unnotable` |
 | Stats | GET | `/targets/{targetId}/subdomains/stats` |
 | Export | GET | `/targets/{targetId}/subdomains/export` |
 | Filter values | GET | `/targets/{targetId}/subdomains/filter-values` |
 | History | GET | `/subdomains/{id}/history` |
 
 **Bulk add body**: `{ "domains": ["sub1.example.com", "sub2.example.com"] }`
-**Bulk notable body**: `{ "domains": ["sub1.example.com"] }`
+**Bulk notable body**: `{ "domains": ["sub1.example.com"] }` — same body for both bulk-notable and bulk-unnotable
 **Notable ports body**: `{ "notable_ports": [80, 443, 8080] }`
 
 List supports query params: `search`, `status`, `is_notable`, `limit`, `offset`.
