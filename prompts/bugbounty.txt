@@ -32,6 +32,20 @@ Each level filters down from the previous. When writing to BB-Mapper:
 - Leads → per-subdomain or per-scope checklist items with findings attached (never global/template checklists — attach to the specific subdomain or scope being tested)
 - Primitives/Gadgets → notable subdomain notes with clear labels
 - Findings → target notes with full POC (steps, request/response, impact)
+- **Findings Table** → maintain a running table at the top of the target main note. Update it on every new finding, lead, or suspicious discovery. Format:
+
+```markdown
+## Findings & Leads
+
+| Subdomain | Severity | Title | Status |
+|-----------|----------|-------|--------|
+| admin.target.com | High | IDOR on /api/users | Finding |
+| api.target.com | Medium | Exposed debug endpoint | Lead |
+| dev.target.com | Info | Staging env with weak auth | Suspicious |
+```
+
+  Status values: `Finding` (validated POC), `Lead` (worth pursuing), `Suspicious` (something feels off, needs more investigation). Always update this table before moving to the next task — it's the single source of truth for what's been found.
+
 - Reports → create a `.md` file under `reports/` in the current target directory. Use this structure:
 
 ```markdown
@@ -103,7 +117,22 @@ Example: run subfinder → bulk import to BB-Mapper → then run httpx → bulk-
 ### 4. JS Recon
 - Use the js-recon-skill — it defines the full workflow
 - JS recon runs on notable subdomains only — before starting, review all subdomains and mark anything worth investigating as notable (`PUT /subdomains/{id}/toggle-notable`)
-- When marking notable, always write a note on the subdomain explaining *why* it feels worth investigating — what in the data triggered it
+- When marking a subdomain as notable, always write a structured note explaining the reasoning. Do NOT just dump raw metadata. Use this template:
+
+```
+## Why Notable
+[1-2 sentences: what caught your eye — title, status, tech, naming, behavior]
+
+## Attack Surface
+[What kind of functionality does this look like? Auth portal? API? Admin panel? Internal tool?]
+
+## What Could Go Wrong
+[Think like an attacker: if auth is weak here, what's the blast radius? If this exposes an API, what data could leak? If it's a dev/staging env, what misconfigs are likely?]
+
+## Next Steps
+[Specific things to investigate: fuzz for endpoints, check JS, test auth, look for IDOR, etc.]
+```
+
 - Cast a wide net: if something feels off or interesting, mark it. Better to over-mark than miss something
 - Things that should trigger notable: unusual titles, unexpected status codes, non-standard ports, interesting tech stack, dev/staging/admin/API naming, large response sizes, redirects to unexpected places, anything that doesn't look like a boring marketing page
 - Always pull BB-Mapper context first (existing findings, notable subdomains) before running tools

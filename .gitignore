@@ -1,0 +1,4 @@
+.kiro/
+settings/
+*.sqlite3
+.cli_bash_history
