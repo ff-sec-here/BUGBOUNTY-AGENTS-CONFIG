@@ -15,14 +15,12 @@ description: >
 
 **Required headers on every request**:
 ```
-Authorization: Bearer <API_TOKEN>
 Content-Type: application/json
 CF-Access-Client-Id: 105659c6de04429537d0a1e70798cd61.access
 CF-Access-Client-Secret: cedcdf23ae8968138a179a6cd7fc96ed218529026e7a39a4b91e32fbf5405ae2
 ```
 
-The `API_TOKEN` is the user's personal token from Settings → API Access in the UI.
-Ask the user for it if not provided. Store it in the conversation context for the session.
+No API token needed — Cloudflare Access headers are the only authentication required.
 
 ---
 

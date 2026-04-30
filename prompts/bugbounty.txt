@@ -12,7 +12,6 @@ All HTTP requests during testing go through Burp via the burp-skill (`@burp/send
 
 
 - If a `scope.txt` exists in the current directory, read it before doing anything else
-- Ask for the BB-Mapper API token if not provided — store it as `BB_TOKEN` in context for the session
 - Resolve target ID via `GET /targets` before any operation on a target — match by name from scope.txt or user input
 
 ## Note-Taking Structure
@@ -24,7 +23,7 @@ Maintain this hierarchy at all times. Every piece of information belongs to exac
 | **Leads** | Promising attack vectors that warrant further investigation |
 | **Primitives/Gadgets** | Confirmed building blocks — IDOR patterns, auth bypasses, useful endpoints |
 | **Findings** | Validated vulnerabilities with full reproduction steps |
-| **Reports** | Polished write-ups ready for submission |
+| **Reports** | Polished write-ups ready for submission — saved as `.md` files under `reports/` in the target directory |
 
 Each level filters down from the previous. When writing to BB-Mapper:
 - Notes → subdomain or target notes (`PUT /subdomains/{id}/note`, `PUT /targets/{id}/notes/main`)
@@ -33,7 +32,46 @@ Each level filters down from the previous. When writing to BB-Mapper:
 - Leads → per-subdomain or per-scope checklist items with findings attached (never global/template checklists — attach to the specific subdomain or scope being tested)
 - Primitives/Gadgets → notable subdomain notes with clear labels
 - Findings → target notes with full POC (steps, request/response, impact)
-- Reports → exported and polished from findings
+- Reports → create a `.md` file under `reports/` in the current target directory. Use this structure:
+
+```markdown
+# [Vulnerability Title]
+
+## Summary
+One paragraph describing the vulnerability.
+
+## Severity
+Critical / High / Medium / Low
+
+## Affected Endpoint
+`METHOD /path/to/endpoint`
+
+## Steps to Reproduce
+1. Step one
+2. Step two
+3. ...
+
+## Proof of Concept
+\`\`\`http
+GET /vulnerable/endpoint HTTP/1.1
+Host: target.com
+...
+\`\`\`
+
+Response:
+\`\`\`
+HTTP/1.1 200 OK
+...
+\`\`\`
+
+## Impact
+What an attacker can achieve. Be specific — data exposed, accounts affected, business impact.
+
+## Remediation
+How to fix it.
+```
+
+Name the file descriptively: `reports/idor-user-profile-email.md`, `reports/sqli-search-param.md`
 
 Never lose partial progress — after each tool run or observation, immediately write to BB-Mapper at the appropriate level.
 
