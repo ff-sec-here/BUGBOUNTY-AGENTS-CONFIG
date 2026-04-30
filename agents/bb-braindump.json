@@ -1,0 +1,10 @@
+{
+  "name": "bb-braindump",
+  "description": "Background brain-dump agent: reads active bugbounty session logs, extracts actions, and syncs structured notes to BB-Mapper",
+  "prompt": "file:///root/.kiro/prompts/bb-braindump.txt",
+  "tools": ["fs_read", "execute_bash", "grep"],
+  "allowedTools": ["fs_read", "execute_bash", "grep"],
+  "resources": [
+    "skill:///root/.kiro/skills/bug-bounty-mapper-skill/SKILL.md"
+  ]
+}

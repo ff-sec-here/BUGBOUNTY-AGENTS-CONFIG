@@ -14,8 +14,8 @@
   "hooks": {
     "agentSpawn": [
       {
-        "command": "echo '[BB] Session started at '$(date) && echo '[BB] Working dir: '$(pwd)",
-        "description": "Log session start"
+        "command": "/root/.kiro/custom-scripts/bb-spawn-context.sh",
+        "description": "Inject existing BB-Mapper notes and activity for current target"
       }
     ]
   },
