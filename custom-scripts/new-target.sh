@@ -63,6 +63,10 @@ NOTES
 
 EOF
 
+# Copy hunt script into target dir
+cp "$(dirname "$0")/hunt" "$TARGET_DIR/hunt"
+chmod +x "$TARGET_DIR/hunt"
+
 echo "[+] Target scaffolded: $TARGET_DIR"
 echo ""
 echo "    Next steps:"
