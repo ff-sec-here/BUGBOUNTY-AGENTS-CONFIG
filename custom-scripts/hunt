@@ -1,0 +1,55 @@
+#!/usr/bin/env bash
+# hunt — start a bug bounty session
+# Usage: hunt [target-dir]
+# Example: hunt ~/BugBounty/bitgo
+
+set -e
+
+TARGET_DIR="${1:-$(pwd)}"
+LOGFILE="/tmp/bb-braindump.log"
+PIDFILE="/tmp/bb-braindump.pid"
+TSFILE="/tmp/bb-braindump-last.ts"
+INTERVAL=300
+
+cd "$TARGET_DIR"
+
+# Kill braindump on exit
+cleanup() {
+  if [[ -f "$PIDFILE" ]]; then
+    PID=$(cat "$PIDFILE")
+    if kill -0 "$PID" 2>/dev/null; then
+      echo ""
+      echo "[braindump] Stopping (PID $PID)..."
+      kill "$PID" 2>/dev/null
+    fi
+    rm -f "$PIDFILE"
+  fi
+}
+trap cleanup EXIT
+
+# Start braindump loop in background
+echo "[braindump] Starting background loop (every ${INTERVAL}s)..."
+date +%s%3N > "$TSFILE"
+
+(
+  echo "[braindump] 🚀 Started at $(date)" >> "$LOGFILE"
+  while true; do
+    sleep "$INTERVAL"
+    TS=$(cat "$TSFILE" 2>/dev/null || echo 0)
+    echo "[braindump] $(date '+%Y-%m-%d %H:%M:%S') — running dump" >> "$LOGFILE"
+    kiro-cli chat \
+      --agent bb-braindump \
+      --message "Run brain dump. BB_TARGET_ID=${BB_TARGET_ID:-} BB_LAST_DUMP_TS=$TS" \
+      --no-interactive \
+      >> "$LOGFILE" 2>&1
+    date +%s%3N > "$TSFILE"
+  done
+) &
+
+BGPID=$!
+echo $BGPID > "$PIDFILE"
+echo "[braindump] ✅ Running (PID $BGPID) — tail -f $LOGFILE"
+echo ""
+
+# Start main hunting agent (foreground, interactive)
+kiro-cli chat --agent bugbounty
