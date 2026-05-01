@@ -16,6 +16,10 @@
       {
         "command": "/root/.kiro/custom-scripts/bb-spawn-context.sh",
         "description": "Inject existing BB-Mapper notes and activity for current target"
+      },
+      {
+        "command": "/root/.kiro/custom-scripts/bb-braindump-start.sh",
+        "description": "Start braindump background loop (runs every 5 min, logs to /tmp/bb-braindump.log)"
       }
     ]
   },
