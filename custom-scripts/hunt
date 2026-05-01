@@ -41,6 +41,7 @@ date +%s%3N > "$TSFILE"
       --agent bb-braindump \
       --message "Run brain dump. BB_TARGET_ID=${BB_TARGET_ID:-} BB_LAST_DUMP_TS=$TS" \
       --no-interactive \
+      --trust-all-tools \
       >> "$LOGFILE" 2>&1
     date +%s%3N > "$TSFILE"
   done
@@ -52,4 +53,4 @@ echo "[braindump] ✅ Running (PID $BGPID) — tail -f $LOGFILE"
 echo ""
 
 # Start main hunting agent (foreground, interactive)
-kiro-cli chat --agent bugbounty
+kiro-cli chat --agent bugbounty --trust-all-tools
