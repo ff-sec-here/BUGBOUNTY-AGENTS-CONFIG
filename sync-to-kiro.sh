@@ -10,7 +10,7 @@ KIRO="$HOME/.kiro"
 for skill_dir in "$REPO/skills"/*/; do
   name=$(basename "$skill_dir")
   mkdir -p "$KIRO/skills/$name"
-  cp "$skill_dir"* "$KIRO/skills/$name/"
+  find "$skill_dir" -maxdepth 1 -type f -exec cp {} "$KIRO/skills/$name/" \;
   echo "synced skill: $name"
 done
 
