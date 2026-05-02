@@ -1,6 +1,6 @@
 # 403/401 Bypass Skill
 
-Use this skill when you encounter a 403 Forbidden or 401 Unauthorized response and want to bypass access controls. Work through each technique systematically. All requests go through Burp.
+Use this skill when you encounter a 403 Forbidden or 401 Unauthorized response and want to bypass access controls. Work through each technique systematically.
 
 ---
 

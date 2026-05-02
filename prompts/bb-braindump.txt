@@ -27,7 +27,7 @@ Identify actions by category:
 | **fuzzing** | ffuf, wordlist, directory/file/vhost fuzzing |
 | **portscan** | nmap, masscan |
 | **js-recon** | JS file analysis, secrets, endpoint discovery |
-| **manual-testing** | Burp requests, parameter testing, auth testing |
+| **manual-testing** | HTTP requests, parameter testing, auth testing |
 | **finding/lead** | vulnerability confirmed or suspected |
 
 For each action extract: what was done, which subdomain(s), any results or findings.

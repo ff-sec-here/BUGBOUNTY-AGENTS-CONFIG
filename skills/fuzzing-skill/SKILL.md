@@ -189,7 +189,7 @@ ffuf -w /path/to/wordlist.txt -u https://target.com/FUZZ -s | tee results.txt
 This is one of the most powerful features of ffuf, especially for authenticated requests with complex headers, cookies, or tokens.
 
 **Workflow:**
-1. Capture a full authenticated request (from Burp Suite, browser DevTools, etc.)
+1. Capture a full authenticated request (from browser DevTools, proxy, etc.)
 2. Save it to a file (e.g., `req.txt`)
 3. Replace the value you want to fuzz with the `FUZZ` keyword
 4. Use the `--request` flag
@@ -235,7 +235,7 @@ ffuf --request req.txt -w endpoints.txt:ENDPOINT -w ids.txt:ID -mode pitchfork -
 
 ### Proxy Usage
 ```bash
-# HTTP proxy (useful for Burp Suite)
+# HTTP proxy
 ffuf -w /path/to/wordlist.txt -u https://target.com/FUZZ -x http://127.0.0.1:8080
 
 # SOCKS5 proxy
@@ -297,7 +297,7 @@ ffuf -w wordlist.txt -u https://target.com/FUZZ -ac
 ### 2. Use Raw Requests for Authentication
 Don't struggle with command-line flags for complex auth. Capture the full request and use `--request`:
 ```bash
-# 1. Capture authenticated request from Burp/DevTools
+# 1. Capture authenticated request from browser DevTools/proxy
 # 2. Save to req.txt with FUZZ keyword in place
 # 3. Run with -ac
 ffuf --request req.txt -w wordlist.txt -ac -o results.json
