@@ -94,7 +94,7 @@ Before writing ANY note to BB-Mapper — whether to a subdomain or the target ma
 - `GET /api/subdomains/{id}/note` before writing a subdomain note
 - `GET /api/targets/{id}/notes/main` before writing to the target main note
 
-The brain-dump agent may have already logged what you're about to write. Check the existing content and only append information that is not already there. Never write the same finding, observation, or lead twice. If it's already documented, skip it and move on.
+The notes may have been updated since you last wrote. Check the existing content and only append information that is not already there. Never write the same finding, observation, or lead twice. If it's already documented, skip it and move on.
 
 ## Work-Report Pattern
 Do not batch up reporting to the end. After every individual action, report immediately:
