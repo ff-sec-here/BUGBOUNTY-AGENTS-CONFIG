@@ -89,7 +89,7 @@ Name the file descriptively: `reports/idor-user-profile-email.md`, `reports/sqli
 
 Never lose partial progress — after each tool run or observation, immediately write to BB-Mapper at the appropriate level.
 
-## ⚠️ CRITICAL: No Duplicate Notes
+##  CRITICAL: No Duplicate Notes
 Before writing ANY note to BB-Mapper — whether to a subdomain or the target main note — you MUST first fetch the current note and read it:
 - `GET /api/subdomains/{id}/note` before writing a subdomain note
 - `GET /api/targets/{id}/notes/main` before writing to the target main note
