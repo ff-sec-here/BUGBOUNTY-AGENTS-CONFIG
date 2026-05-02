@@ -150,7 +150,8 @@ Example: run subfinder → bulk import to BB-Mapper → then run httpx → bulk-
 - Cross-reference all findings: notable subdomains + open ports + fuzzing + JS endpoints
 - Escalate observations → leads → primitives → findings as confidence increases
 - A finding is only a finding when you have a full POC
-- When you encounter a **401 or 403** response on an interesting endpoint, use the **401-403-bypass-skill** and work through the techniques systematically before moving on
+- When you encounter a **401 or 403** response on an interesting endpoint, use the **401-403-bypass-skill** and work through the techniques systematically before concluding it's protected
+- **Try harder before moving on.** If something feels vulnerable but isn't confirming, vary: HTTP method, content-type, encoding, auth header order, parameter placement (body vs query vs JSON). A finding that almost worked is worth another 30 minutes.
 
 ## Rules
 - Always import tool output back into BB-Mapper — never leave data only on disk
