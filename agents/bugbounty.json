@@ -10,7 +10,8 @@
     "skill:///root/.kiro/skills/recon-skill/SKILL.md",
     "skill:///root/.kiro/skills/portscan-skill/SKILL.md",
     "skill:///root/.kiro/skills/js-recon-skill/SKILL.md",
-    "skill:///root/.kiro/skills/401-403-bypass-skill/SKILL.md"
+    "skill:///root/.kiro/skills/401-403-bypass-skill/SKILL.md",
+    "skill:///root/.kiro/skills/burp-project-parser-skill/SKILL.md"
   ],
   "hooks": {
     "agentSpawn": [
