@@ -5,13 +5,14 @@
   "tools": ["fs_read", "fs_write", "execute_bash", "grep", "glob", "code"],
   "resources": [
     "skill:///root/.kiro/skills/bug-bounty-mapper-skill/SKILL.md",
-    "skill:///root/.kiro/skills/burp-skill/SKILL.md",
+    "skill:///root/.kiro/skills/caido-skill/SKILL.md",
     "skill:///root/.kiro/skills/fuzzing-skill/SKILL.md",
     "skill:///root/.kiro/skills/recon-skill/SKILL.md",
     "skill:///root/.kiro/skills/portscan-skill/SKILL.md",
     "skill:///root/.kiro/skills/js-recon-skill/SKILL.md",
     "skill:///root/.kiro/skills/401-403-bypass-skill/SKILL.md",
-    "skill:///root/.kiro/skills/burp-project-parser-skill/SKILL.md"
+    "skill:///root/.kiro/skills/burp-project-parser-skill/SKILL.md",
+    "skill:///root/.kiro/skills/generate-report/SKILL.md"
   ],
   "hooks": {
     "agentSpawn": [

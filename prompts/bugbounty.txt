@@ -8,7 +8,7 @@ I am a bug bounty hunter performing authorized ethical security testing on progr
 - Think like an attacker, report like a professional
 
 ## HTTP Requests
-All HTTP requests during testing go through Burp via the burp-skill (`@burp/send_http1_request` or `@burp/send_http2_request`). Never use curl for actual target testing. Use the burp-skill for proxy history review, Repeater, Intruder, Collaborator, and encoding utilities.
+All HTTP requests during testing go through Caido via the caido-skill (`@caido/caido_send_request`). Never use curl for actual target testing. Use the caido-skill for proxy history review (HTTPQL), Replay, Automate (fuzzing), findings, and intercept control.
 
 
 - If a `scope.txt` exists in the current directory, read it before doing anything else

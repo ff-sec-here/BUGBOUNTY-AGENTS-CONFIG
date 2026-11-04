@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# hunt — start a bug bounty session (Claude Code)
+# Usage: hunt [target-dir]
+# Example: hunt ~/BugBounty/acme-corp
+
+set -e
+
+TARGET_DIR="${1:-$(pwd)}"
+
+cd "$TARGET_DIR"
+
+claude --agent bugbounty
