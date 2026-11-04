@@ -1,9 +1,9 @@
 ---
 name: bug-bounty-mapper
 description: >
-  Use the `bbm` CLI to interact with BB-Manager at mapper.fhdsec.info.
+  Use the `bbm` CLI to interact with BB-Manager at bug-bounty manager.
   Use when the user wants to manage bug bounty data: targets, subdomains, notes,
-  checklists, scans, fuzzing, ports, alerts, dorking, JS recon, and more.
+  checklists, scans, fuzzing, ports, alerts, dorking, JS recon, reports, and more.
 ---
 
 # Bug Bounty Mapper — bbm CLI Skill
@@ -94,6 +94,19 @@ bbm notes get-subdomain <subdomain_id>
 bbm notes update-subdomain <subdomain_id> "XSS found at /search"
 bbm notes update-subdomain <subdomain_id> "more info" --append
 bbm notes delete <note_id>
+```
+
+### Reports
+```bash
+bbm reports list <target_id>
+bbm reports get <id>
+bbm reports create <target_id> --title "..." [--severity critical|high|medium|low|info] [--status draft|submitted|triaged|resolved|duplicate|not_applicable|informative|paid] [--cwe "CWE-79"] [--asset "https://..."] [--subdomain-id <id>] [--content "markdown body"]
+bbm reports update <id> [--title "..."] [--severity ...] [--status ...] [--cwe "..."] [--asset "..."] [--subdomain-id <id>] [--content "..."]
+bbm reports delete <id>
+bbm reports link-note <report_id> <note_id>
+bbm reports unlink-note <report_id> <note_id>
+bbm reports link-item <report_id> --checklist-item-id <id> | --custom-item-id <id>
+bbm reports unlink-item <report_id> --checklist-item-id <id> | --custom-item-id <id>
 ```
 
 ### Scope
