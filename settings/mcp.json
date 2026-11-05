@@ -2,7 +2,7 @@
   "mcpServers": {
     "caido": {
       "type": "stdio",
-      "command": "/root/caido-mcp-server/caido-mcp-server",
+      "command": "${HOME}/caido-mcp-server/caido-mcp-server",
       "args": ["serve"],
       "env": {
         "CAIDO_URL": "http://100.75.17.36:8080"
