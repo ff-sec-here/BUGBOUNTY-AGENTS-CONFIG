@@ -11,7 +11,7 @@ description: >
 ## Setup
 
 ```bash
-export BBM_BASE_URL="https://mapper.fhdsec.info/api"
+export BBM_BASE_URL="https://bb-manager-1.tail0b2a37.ts.net/api"
 # CF auth is built-in — no token needed
 ```
 
